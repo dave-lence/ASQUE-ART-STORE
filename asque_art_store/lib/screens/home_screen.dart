@@ -1,15 +1,16 @@
 import 'package:asque_art_store/components/components.dart';
+import 'package:asque_art_store/components/trending_prod_list.dart';
+import 'package:asque_art_store/models/product_model.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+   HomeScreen({super.key,  });
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  //final  product =  Product;
+  
 
-class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Center(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(
                     height: 10,
@@ -95,14 +97,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     children: <Widget>[
                       Expanded(
-                          child: CustomTextField(
-                              iconName: const Icon(
-                                Icons.search,
-                                color: Colors.white,
-                              ),
-                              controller: _searchController,
-                              hintText: 'Ex. nigerian art',
-                              obscureText: false)),
+                          child: Container(
+                            height: 50,
+                            child: CustomTextField(
+                                iconName: const Icon(
+                                  Icons.search,
+                                  color: Colors.white,
+                                ),
+                                controller: _searchController,
+                                hintText: 'Ex. nigerian art',
+                                obscureText: false),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -117,10 +122,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               )),
                           IconButton(
                               onPressed: () {},
-                              icon: const Icon(
-                                Icons.notifications,
-                                color: Colors.white,
-                                size: 30,
+                              icon: const Badge(
+                                largeSize: Checkbox.width,
+                                isLabelVisible: true,
+                                label: Text("3"),
+                                textColor: Colors.white,
+                                backgroundColor: Colors.red,
+                                child: Icon(
+                                  Icons.notifications,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
                               )),
                         ],
                       )
@@ -128,16 +140,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   // Trending sections
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Row(
+
+                 
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SrctionTile( title: "Trending Products",),
+                      SrctionTile(
+                        title: "Trending Products",
+                      ),
                     ],
-                  )
+                  ),
+                    TrendingProdList(products: Product.products.where((prduct) => prduct.isTrending).toList()),
+
+                    //art work
+                     const SizedBox(
+                    height: 20,
+                  ),
+
+                    const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SrctionTile(
+                        title: "Art work",
+                      ),
+                    ],
+                  ),
+                   ProductList(products: Product.products.where((product) => product.isArt).toList()),
                 ],
+                
               ),
             ),
           ),
@@ -146,4 +179,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

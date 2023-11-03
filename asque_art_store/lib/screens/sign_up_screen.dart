@@ -1,5 +1,8 @@
 import 'package:asque_art_store/components/components.dart';
+import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
+import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -173,7 +176,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                const CustomButton(btnTitle: 'Sign Up'),
+                 CustomButton(btnTitle: 'Sign Up', onTap: () {
+                    Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: const Duration(seconds: 2),
+                                    child:  BottomNavBar()));
+                },),
 
                 // other options
                 const SizedBox(
@@ -280,7 +290,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Already a user?', style: TextStyle(color: Colors.white),
@@ -289,7 +299,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Sign In here", style: TextStyle(color:Color.fromARGB(255, 172, 113, 92,),),)
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.bottomToTop,
+                                    curve: Curves.bounceOut,
+                                    duration: const Duration(seconds: 2),
+                                    child: const SignInScreen()));
+                      },
+                      child: Text("Sign In here", style: TextStyle(color:Color.fromARGB(255, 172, 113, 92,),),))
                   ],
                 )
               ],

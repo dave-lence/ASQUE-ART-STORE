@@ -1,5 +1,8 @@
 import 'package:asque_art_store/components/components.dart';
+import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
+import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -13,7 +16,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final passwordController = TextEditingController();
 
   bool passVisibility = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
 
                 /// text fields
-                  
 
                 // email field
                 CustomTextField(
@@ -98,18 +99,29 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text('Forgot password?', style: TextStyle(color: Colors.grey.shade400),)
-                ],
+                  children: [
+                    Text(
+                      'Forgot password?',
+                      style: TextStyle(color: Colors.grey.shade400),
+                    )
+                  ],
                 ),
-
-                
 
                 // sign up button
                 const SizedBox(
                   height: 25,
                 ),
-                const CustomButton(btnTitle: 'Sign In'),
+                CustomButton(
+                  btnTitle: 'Sign In',
+                  onTap: () {
+                     Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: const Duration(seconds: 2),
+                                    child:  BottomNavBar()));
+                  },
+                ),
 
                 // other options
                 const SizedBox(
@@ -211,21 +223,41 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
 
-
                 // a new user text
                 SizedBox(
                   height: 40,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Are you a user?', style: TextStyle(color: Colors.white),
-                    
+                    Text(
+                      'Are you a user?',
+                      style: TextStyle(color: Colors.white),
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Sign Up here", style: TextStyle(color:Color.fromARGB(255, 172, 113, 92,),),)
+                    InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.bottomToTop,
+                                  curve: Curves.bounceOut,
+                                  duration: const Duration(seconds: 2),
+                                  child: const SignUpScreen()));
+                        },
+                        child: Text(
+                          "Sign Up here",
+                          style: TextStyle(
+                            color: Color.fromARGB(
+                              255,
+                              172,
+                              113,
+                              92,
+                            ),
+                          ),
+                        ))
                   ],
                 )
               ],

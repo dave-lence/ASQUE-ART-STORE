@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class Product extends Equatable {
   final String id;
   final String prodName;
-  final String category;
+  final bool isArt;
   final List<String> imageUrls;
   final double price;
   final String isAvailable;
@@ -12,7 +12,7 @@ class Product extends Equatable {
   Product({
     required this.id,
     required this.prodName,
-    required this.category,
+    required this.isArt,
     required this.imageUrls,
     required this.price,
     required this.isAvailable,
@@ -24,7 +24,7 @@ class Product extends Equatable {
   List<Object?> get props => [
         id,
         prodName,
-        category,
+        isArt,
         imageUrls,
         price,
         isAvailable,
@@ -35,19 +35,19 @@ class Product extends Equatable {
     Product(
       id: '1',
       prodName: 'Swepes',
-      category: 'Art works',
+      isArt: true,
       imageUrls: const [
         'https://images.unsplash.com/photo-1598614187854-26a60e982dc4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80', //https://unsplash.com/photos/dO9A6mhSZZY
         'https://images.unsplash.com/photo-1598614187854-26a60e982dc4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
-      ], 
+      ],
       price: 2.99,
       isAvailable: 'Unlimited',
       isTrending: false,
     ),
     Product(
       id: '2',
-      prodName: 'Thumbs Up',
-      category: 'Collections',
+      prodName: 'Thumbs Up Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1610873167013-2dd675d30ef4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=488&q=80', //https://unsplash.com/photos/Viy_8zHEznk
         'https://images.unsplash.com/photo-1610873167013-2dd675d30ef4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=488&q=80', //https://unsplash.com/photos/Viy_8zHEznk
@@ -58,8 +58,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '3',
-      prodName: 'Soda',
-      category: 'Photograph',
+      prodName: 'Soda Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://media.istockphoto.com/id/459458845/photo/set-of-drink-cans.webp?b=1&s=170667a&w=0&k=20&c=SGTIhQhHLv_pl13BiUQqvKrIqTyEfmzxeo6Ocn0f73M=', //https://unsplash.com/photos/5LIInaqRp5s
         'https://media.istockphoto.com/id/459458845/photo/set-of-drink-cans.webp?b=1&s=170667a&w=0&k=20&c=SGTIhQhHLv_pl13BiUQqvKrIqTyEfmzxeo6Ocn0f73M=', //https://unsplash.com/photos/5LIInaqRp5s
@@ -70,8 +70,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '4',
-      prodName: 'Fine art',
-      category: 'Fine art',
+      prodName: 'Fine art Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1526424382096-74a93e105682?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80', //https://unsplash.com/photos/kcYXj4tBtes
         'https://images.unsplash.com/photo-1526424382096-74a93e105682?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80', //https://unsplash.com/photos/kcYXj4tBtes
@@ -82,8 +82,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '5',
-      prodName: 'Sculpture',
-      category: 'Sculpture',
+      prodName: 'Sculpture Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -95,7 +95,7 @@ class Product extends Equatable {
     Product(
       id: '6',
       prodName: 'Hollandia Milk',
-      category: 'Art works',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -106,8 +106,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '7',
-      prodName: 'Pepsi',
-      category: 'Collections',
+      prodName: 'Pepsi Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -119,7 +119,7 @@ class Product extends Equatable {
     Product(
       id: '8',
       prodName: 'Mexican soda',
-      category: 'Photograph',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -130,8 +130,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '9',
-      prodName: 'Sculpture',
-      category: 'Sculpture',
+      prodName: 'Sculpture Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -143,7 +143,7 @@ class Product extends Equatable {
     Product(
       id: '10',
       prodName: 'Green Smothies',
-      category: 'Fine art',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -155,7 +155,7 @@ class Product extends Equatable {
     Product(
       id: '11',
       prodName: 'Soft Drink #1',
-      category: 'Sculpture',
+      isArt: true,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -166,8 +166,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '12',
-      prodName: 'Coca cola',
-      category: 'Art works',
+      prodName: 'Coca cola Thumbs Up',
+      isArt: true,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -178,8 +178,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '13',
-      prodName: 'Soft Drink',
-      category: 'Fine art',
+      prodName: 'Soft Drink Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -191,7 +191,7 @@ class Product extends Equatable {
     Product(
       id: '14',
       prodName: 'Mango smothie',
-      category: 'Collections',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -203,7 +203,7 @@ class Product extends Equatable {
     Product(
       id: '15',
       prodName: 'Modern sport casual shoe',
-      category: 'Collections',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -215,7 +215,7 @@ class Product extends Equatable {
     Product(
       id: '16',
       prodName: 'Black red air jordan',
-      category: 'Photograph',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -226,8 +226,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '17',
-      prodName: 'Nike Air max',
-      category: 'Fine art',
+      prodName: 'Nike Air max Thumbs',
+      isArt: true,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -239,7 +239,7 @@ class Product extends Equatable {
     Product(
       id: '18',
       prodName: 'Grey blank T-shirt',
-      category: 'Sculpture',
+      isArt: true,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -251,7 +251,7 @@ class Product extends Equatable {
     Product(
       id: '19',
       prodName: 'Blue T-shirt',
-      category: 'Art works',
+      isArt: true,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -263,7 +263,7 @@ class Product extends Equatable {
     Product(
       id: '20',
       prodName: 'Grey crew T-shirt',
-      category: 'Photograph',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
@@ -274,8 +274,8 @@ class Product extends Equatable {
     ),
     Product(
       id: '21',
-      prodName: 'Floral top',
-      category: 'Collections',
+      prodName: 'Floral top Thumbs Up',
+      isArt: false,
       imageUrls: const [
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
         'https://images.unsplash.com/photo-1505252585461-04db1eb84625?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1552&q=80', //https://unsplash.com/photos/CrK843Pl9a4
