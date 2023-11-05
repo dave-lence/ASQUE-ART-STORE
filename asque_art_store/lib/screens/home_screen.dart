@@ -1,20 +1,23 @@
 import 'package:asque_art_store/components/components.dart';
 import 'package:asque_art_store/components/trending_prod_list.dart';
 import 'package:asque_art_store/models/product_model.dart';
+import 'package:asque_art_store/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class HomeScreen extends StatelessWidget {
-   HomeScreen({super.key,  });
+  HomeScreen({
+    super.key,
+  });
 
   //final  product =  Product;
-  
 
   final _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.grey.shade800,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -55,7 +58,14 @@ class HomeScreen extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: CartScreen(),
+                                      duration: Duration(seconds: 1),
+                                      type: PageTransitionType.bottomToTop));
+                            },
                             icon: const Badge(
                               largeSize: Checkbox.width,
                               isLabelVisible: true,
@@ -98,16 +108,16 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                           child: Container(
-                            height: 50,
-                            child: CustomTextField(
-                                iconName: const Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                ),
-                                controller: _searchController,
-                                hintText: 'Ex. nigerian art',
-                                obscureText: false),
-                          )),
+                        height: 50,
+                        child: CustomTextField(
+                            iconName: const Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                            controller: _searchController,
+                            hintText: 'Ex. nigerian art',
+                            obscureText: false),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -144,7 +154,6 @@ class HomeScreen extends StatelessWidget {
                     height: 20,
                   ),
 
-                 
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -153,14 +162,17 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                    TrendingProdList(products: Product.products.where((prduct) => prduct.isTrending).toList()),
+                  TrendingProdList(
+                      products: Product.products
+                          .where((prduct) => prduct.isTrending)
+                          .toList()),
 
-                    //art work
-                     const SizedBox(
+                  //art work
+                  const SizedBox(
                     height: 20,
                   ),
 
-                    const Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SrctionTile(
@@ -168,9 +180,75 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                   ProductList(products: Product.products.where((product) => product.isArt).toList()),
+                  ProductList(
+                      products: Product.products
+                          .where((product) => product.isArt)
+                          .toList()),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SrctionTile(
+                        title: "Sculpture",
+                      ),
+                    ],
+                  ),
+                  ProductList(
+                      products: Product.products
+                          .where((product) => product.isSculpture)
+                          .toList()),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SrctionTile(
+                        title: "Collections",
+                      ),
+                    ],
+                  ),
+                  ProductList(
+                      products: Product.products
+                          .where((product) => product.isArt)
+                          .toList()),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SrctionTile(
+                        title: "Fine Art",
+                      ),
+                    ],
+                  ),
+                  ProductList(
+                      products: Product.products
+                          .where((product) => product.isFineArt)
+                          .toList()),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SrctionTile(
+                        title: "Photograph",
+                      ),
+                    ],
+                  ),
+                  ProductList(
+                      products: Product.products
+                          .where((product) => product.isArt)
+                          .toList()),
                 ],
-                
               ),
             ),
           ),

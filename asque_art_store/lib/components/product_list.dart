@@ -16,10 +16,11 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 3),
+      padding: const EdgeInsets.only(right: 3,),
       child: SizedBox(
-        height: 270,
+        height: 290,
         child: ListView.builder(
+          padding: EdgeInsets.only(bottom: 20),
             itemCount: products.length,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,

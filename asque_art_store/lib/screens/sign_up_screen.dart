@@ -20,6 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool passVisibility = false;
   bool confirmPassVisibility = false;
   bool isChecked = false;
+  bool isLoading = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -181,8 +183,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    duration: const Duration(seconds: 2),
-                                    child:  BottomNavBar()));
+                                    duration: const Duration(seconds: 1),
+                                    child:  const BottomNavBar()));
                 },),
 
                 // other options
@@ -287,16 +289,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
                 // already a user text
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                  Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Already a user?', style: TextStyle(color: Colors.white),
+                    const Text('Already a user?', style: TextStyle(color: Colors.white),
                     
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     InkWell(
@@ -309,7 +311,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     duration: const Duration(seconds: 2),
                                     child: const SignInScreen()));
                       },
-                      child: Text("Sign In here", style: TextStyle(color:Color.fromARGB(255, 172, 113, 92,),),))
+                      child: const Text("Sign In here", style: TextStyle(color:Color.fromARGB(255, 172, 113, 92,),),))
                   ],
                 )
               ],

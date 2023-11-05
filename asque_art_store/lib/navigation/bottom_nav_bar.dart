@@ -1,4 +1,4 @@
-import 'package:asque_art_store/screens/home_screen.dart';
+import 'package:asque_art_store/config/theme.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +13,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    const CartScreen(),
-    const MoreScreen()
+    const FavouriteScreen(),
+    const ProfileScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -26,25 +26,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.grey.shade800,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
         
-        margin: EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
          decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.black,
+          color: Colors.grey.shade600,
           border: Border.fromBorderSide(
             BorderSide(
               width: 1,
-              color: const Color.fromARGB(
-                          255,
-                          172,
-                          113,
-                          92,
-                        ),
+              color: CustomAppTheme().primary,
             )
           )
          ),
@@ -68,22 +63,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   backgroundColor: Colors.black,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart, size: 20,),
-                  label: 'Cart',
+                  icon: Icon(Icons.favorite, size: 20,),
+                  label: 'Favorite',
                   backgroundColor: Colors.black,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.apps, size: 20,),
-                  label: 'More',
+                  icon: Icon(Icons.person, size: 20,),
+                  label: 'Profile',
                   
                   backgroundColor: Colors.black,
                 ),
               ],
-              unselectedIconTheme: IconThemeData(
+              unselectedIconTheme: const IconThemeData(
                 color: Colors.white
               ),
               type: BottomNavigationBarType.fixed,
-              selectedLabelStyle: TextStyle(color: Colors.black),
+              selectedLabelStyle: const TextStyle(color: Colors.black),
               // unselectedLabelStyle: TextStyle(color: Colors.white),
               currentIndex: _selectedIndex,
               selectedItemColor: Colors.black,

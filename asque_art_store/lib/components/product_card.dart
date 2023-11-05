@@ -1,3 +1,4 @@
+import 'package:asque_art_store/config/theme.dart';
 import 'package:asque_art_store/models/product_model.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +16,16 @@ class ProductCard extends StatelessWidget {
         height: 250,
         width: 150,
         decoration: BoxDecoration(
-            border: const Border.fromBorderSide(BorderSide(
-              color: Color.fromARGB(
-                255,
-                172,
-                113,
-                92,
-              ),
-            )),
-            color: Colors.black,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(3, 5), blurRadius: 8)
+            ],
+            color: Colors.grey.shade800,
             borderRadius: BorderRadius.circular(10)),
-        margin: const EdgeInsets.only(top: 20, right: 10),
+        margin: const EdgeInsets.only(
+          top: 20,
+          right: 10,
+        ),
         child: Column(
           children: <Widget>[
             Stack(
@@ -46,7 +46,7 @@ class ProductCard extends StatelessWidget {
                       child: IconButton(
                           onPressed: () {},
                           icon: const Icon(
-                            Icons.add_shopping_cart,
+                            Icons.favorite,
                             color: Colors.white,
                           )),
                       height: 40,
@@ -96,41 +96,32 @@ class ProductCard extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                          child: ProductScreen(
-                            productImages: product.imageUrls,
-                            productName: product.prodName,
-                            productPrice: product.price,
-                            isAvailable: product.isAvailable,
-                          ),
-                          duration: Duration(seconds: 1),
-                          type: PageTransitionType.leftToRightWithFade,
-                          alignment: Alignment.topCenter,
-                        ));
-                  },
-                  child: Container(
-                      height: 40,
-                      width: 150,
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(
-                            255,
-                            172,
-                            113,
-                            92,
-                          ),
-                          borderRadius: BorderRadius.circular(7)),
-                      child: const Center(
-                          child: Text(
-                        "View product",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ))),
-                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                            child: ProductScreen(
+                              productImages: product.imageUrls,
+                              productName: product.prodName,
+                              productPrice: product.price,
+                              isAvailable: product.isAvailable,
+                            ),
+                            duration: Duration(seconds: 1),
+                            type: PageTransitionType.leftToRightWithFade,
+                            alignment: Alignment.topCenter,
+                          ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomAppTheme().primary,
+                      minimumSize: Size(double.infinity, 40)
+                    ),
+                    child: Text(
+                      "View product",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    )),
               ],
             )
           ],

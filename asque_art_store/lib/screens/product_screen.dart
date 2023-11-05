@@ -21,9 +21,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   // Initialize with the index of the first image
   static int currentIndex = 0;
-  static String selectedDropdown = 'select';
-
-  
+  // static String selectedDropdown = 'select';
 
   @override
   Widget build(BuildContext context) {
@@ -136,21 +134,20 @@ class _ProductScreenState extends State<ProductScreen> {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.fromBorderSide(
-                        BorderSide(
-                          color: Colors.orange.shade800,width: 1
-                        )
-                      )
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.fromBorderSide(BorderSide(
+                            color: Colors.orange.shade800, width: 1))),
+                    child: const Text(
+                      "Select size",
+                      style: TextStyle(color: Colors.white),
                     ),
-                  child: const Text("Select size", style: TextStyle(color: Colors.white),),
                   )
                 ]),
-                ),
+              ),
 
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: RichText(
                       text: TextSpan(children: <TextSpan>[
                     const TextSpan(
@@ -161,9 +158,10 @@ class _ProductScreenState extends State<ProductScreen> {
                         style: TextStyle(color: Colors.orange[800]))
                   ]))),
 
-                  // availability
-                  Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              // availability
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: RichText(
                       text: TextSpan(children: <TextSpan>[
                     const TextSpan(
@@ -173,8 +171,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         text: widget.isAvailable,
                         style: TextStyle(color: Colors.orange[800]))
                   ]))),
-                  Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: RichText(
                       text: TextSpan(children: <TextSpan>[
                     const TextSpan(
@@ -184,7 +183,85 @@ class _ProductScreenState extends State<ProductScreen> {
                         text: '\$${widget.productPrice}',
                         style: TextStyle(color: Colors.orange[800]))
                   ]))),
-                  
+
+              // cart number
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(children: <Widget>[
+                  const Text("Quantiy:", style: TextStyle(color: Colors.white)),
+                  const SizedBox(
+                    width: 3,
+                  ),
+                 
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.remove_circle_sharp,
+                        color: Colors.white,
+                      )),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  const Text(
+                    '2',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add_circle_sharp,
+                        color: Colors.white,
+                      )),
+                ]),
+              ),
+
+
+              //Varaities
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                child: Row(children: <Widget>[
+                  const Text("Varieties:", style: TextStyle(color: Colors.white)),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                   ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.asset("assets/art-1.jpg", width:30, height: 30,fit: BoxFit.cover,),
+                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                   ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.asset("assets/art-1.jpg", width:30, height: 30,fit: BoxFit.cover,),
+                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                   ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.asset("assets/art-1.jpg", width:30, height: 30,fit: BoxFit.cover,),
+                   ),
+                ]),
+              ),
+
+
+              Container(
+                margin: const EdgeInsets.only(top: 60),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomAppTheme().primary,
+                      minimumSize: const Size(double.infinity, 40),
+                      
+                    ),
+                    onPressed: () {}, child: const Text("Add to Cart", style: TextStyle(color: Colors.white),)),
+                ),
+              )
             ],
           ),
         ),

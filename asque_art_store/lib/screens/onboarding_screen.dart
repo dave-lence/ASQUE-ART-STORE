@@ -155,6 +155,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     duration: const Duration(seconds: 2),
                                     child: const SignUpScreen()));
                           },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: CustomAppTheme().primary,
+                              elevation: 6,
+                              animationDuration: const Duration(seconds: 3)),
                           child: const Text(
                             'Sign Up',
                             style: TextStyle(
@@ -163,10 +167,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               color: Colors.white,
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: CustomAppTheme().primary,
-                              elevation: 6,
-                              animationDuration: const Duration(seconds: 3)),
                         ),
                       ),
                     ),

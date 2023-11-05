@@ -4,5 +4,6 @@ export 'onboarding_screen.dart';
 export 'sign_up_screen.dart';
 export 'sign_in_screen.dart';
 export 'cart_screen.dart';
-export 'more_screen.dart';
+export 'profile_screen.dart';
 export 'product_screen.dart';
+export 'favourite_screen.dart';

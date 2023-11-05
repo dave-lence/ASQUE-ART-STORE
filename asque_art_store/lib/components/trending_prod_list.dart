@@ -16,8 +16,9 @@ class TrendingProdList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right:3),
       child: SizedBox(
-        height: 100,
+        height: 120,
         child: ListView.builder(
+          padding: EdgeInsets.only(bottom: 20),
            itemCount: products.length,
            shrinkWrap: true,
            scrollDirection: Axis.horizontal,

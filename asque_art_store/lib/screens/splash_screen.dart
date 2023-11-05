@@ -27,8 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
       debugShowCheckedModeBanner: false,
       home: SplashScreenView(
         navigateWhere: isLoaded,
-        duration: Duration(seconds: 8),
-        navigateRoute: OnboardingScreen(),
+        duration: const Duration(seconds: 8),
+        navigateRoute: const OnboardingScreen(),
         pageRouteTransition: PageRouteTransition.CupertinoPageRoute,
         backgroundColor: Colors.black,
              

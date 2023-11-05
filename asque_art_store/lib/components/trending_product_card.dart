@@ -16,6 +16,13 @@ class TrendingProdCard extends StatelessWidget {
          height: 80,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              offset: Offset(4, 4),
+              blurRadius: 6
+            )
+          ],
           borderRadius: BorderRadius.circular(10),
           color: const Color.fromARGB(255, 172, 113, 92),
         ),

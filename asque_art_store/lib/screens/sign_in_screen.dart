@@ -119,7 +119,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
                                     duration: const Duration(seconds: 2),
-                                    child:  BottomNavBar()));
+                                    child:  const BottomNavBar()));
                   },
                 ),
 
@@ -224,17 +224,17 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
 
                 // a new user text
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Are you a user?',
                       style: TextStyle(color: Colors.white),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     InkWell(
@@ -247,7 +247,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   duration: const Duration(seconds: 2),
                                   child: const SignUpScreen()));
                         },
-                        child: Text(
+                        child: const Text(
                           "Sign Up here",
                           style: TextStyle(
                             color: Color.fromARGB(
