@@ -1,7 +1,9 @@
 import 'package:asque_art_store/components/components.dart';
+import 'package:asque_art_store/config/theme.dart';
 import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:page_transition/page_transition.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -21,7 +23,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool confirmPassVisibility = false;
   bool isChecked = false;
   bool isLoading = false;
-  
+  String errorMessage = '';
+
+  /// function to sign  user up
+  Future<void> signUpFunction() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = '';
+    });
+
+    final apiUri = Uri.parse(
+        'https://asque-media-development.onrender.com/api/v1/auth/register');
+
+    try {
+      final response = await http.post(apiUri, body: {
+        'email': emailController.text,
+        'password': passwordController.text,
+        'confirmPassword': confirmPasswordController.text
+      });
+
+      // if status code is OK sign up user
+      if (response.statusCode == 201) {
+        print(response.body);
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft,
+                duration: const Duration(seconds: 1),
+                child: const BottomNavBar()));
+      } else {
+        setState(() {
+          errorMessage = 'Sign Up faild: ${response.body}';
+        });
+      }
+    } catch (error) {
+      setState(() {
+        errorMessage = 'Sign Up faild: ${error}';
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,19 +222,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                 CustomButton(btnTitle: 'Sign Up', onTap: () {
-                    Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    duration: const Duration(seconds: 1),
-                                    child:  const BottomNavBar()));
-                },),
+                CustomButton(btnTitle: 'Sign Up', onTap: signUpFunction),
 
                 // other options
-                const SizedBox(
-                  height: 68,
-                ),
+                isLoading
+                    ? CircularProgressIndicator(
+                      backgroundColor: Color.fromRGBO(20, 100, 20, 5),
+                      color: CustomAppTheme().primary,
+                    )
+                    : errorMessage.isNotEmpty
+                        ? Text(
+                            errorMessage,
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : const SizedBox(
+                            height: 68,
+                          ),
                 // or sign up with
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -287,31 +334,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-
                 // already a user text
                 const SizedBox(
                   height: 20,
                 ),
-                 Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Already a user?', style: TextStyle(color: Colors.white),
-                    
+                    const Text(
+                      'Already a user?',
+                      style: TextStyle(color: Colors.white),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     InkWell(
-                      onTap: () {
-                        Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.bottomToTop,
-                                    curve: Curves.bounceOut,
-                                    duration: const Duration(seconds: 2),
-                                    child: const SignInScreen()));
-                      },
-                      child: const Text("Sign In here", style: TextStyle(color:Color.fromARGB(255, 172, 113, 92,),),))
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.bottomToTop,
+                                  curve: Curves.bounceOut,
+                                  duration: const Duration(seconds: 2),
+                                  child: const SignInScreen()));
+                        },
+                        child:  Text(
+                          "Sign In here",
+                          style: TextStyle(
+                            color: CustomAppTheme().primary
+                          ),
+                        ))
                   ],
                 )
               ],
