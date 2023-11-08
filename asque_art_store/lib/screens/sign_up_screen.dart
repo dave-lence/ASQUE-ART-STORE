@@ -1,9 +1,10 @@
 import 'package:asque_art_store/components/components.dart';
 import 'package:asque_art_store/config/theme.dart';
+import 'package:asque_art_store/models/client_logic.dart';
 import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -23,44 +24,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool confirmPassVisibility = false;
   bool isChecked = false;
   bool isLoading = false;
-  String errorMessage = '';
 
   /// function to sign  user up
-  Future<void> signUpFunction() async {
+  void signUpFunction(BuildContext contex) async {
     setState(() {
       isLoading = true;
-      errorMessage = '';
     });
 
-    final apiUri = Uri.parse(
-        'https://asque-media-development.onrender.com/api/v1/auth/register');
+    final signUpProvider = Provider.of<ClientProvider>(context, listen: false);
+    final result = await signUpProvider.signUp(
+        emailController.text,
+        userNameController.text,
+        passwordController.text,
+        confirmPasswordController.text);
 
-    try {
-      final response = await http.post(apiUri, body: {
-        'email': emailController.text,
-        'password': passwordController.text,
-        'confirmPassword': confirmPasswordController.text
-      });
+    await Future.delayed(const Duration(seconds: 5));
+    if (result == "success") {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        closeIconColor: Colors.white,
+        elevation: 8,
+        showCloseIcon: true,
+        duration: const Duration(seconds: 10),
+        content: Text("Hello ${userNameController.text}, welcom on board!"),
+        backgroundColor: CustomAppTheme()
+            .primary, // Set the background color to red for error messages
+      ));
+      Navigator.of(context).pushAndRemoveUntil(
+        PageTransition(
+          duration: const Duration(seconds: 1),
+          type: PageTransitionType.rightToLeft,
+          child: const BottomNavBar(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 15),
+        closeIconColor: Colors.white,
+        elevation: 8,
+        showCloseIcon: true,
+        content: Text(result),
+        backgroundColor:
+            Colors.red, // Set the background color to red for error messages
+      ));
 
-      // if status code is OK sign up user
-      if (response.statusCode == 201) {
-        print(response.body);
-        Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.rightToLeft,
-                duration: const Duration(seconds: 1),
-                child: const BottomNavBar()));
-      } else {
-        setState(() {
-          errorMessage = 'Sign Up faild: ${response.body}';
-        });
-      }
-    } catch (error) {
-      setState(() {
-        errorMessage = 'Sign Up faild: ${error}';
-      });
-    } finally {
       setState(() {
         isLoading = false;
       });
@@ -72,301 +79,302 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                const SizedBox(
-                  height: 50,
-                ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  isLoading
+                      ? LinearProgressIndicator(
+                          backgroundColor: Colors.grey,
+                          color: CustomAppTheme().primary,
+                        )
+                      : const SizedBox.shrink(),
 
-                //top text
-                const Text(
-                  "ASQUE",
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
+                  const SizedBox(
+                    height: 50,
+                  ),
 
-                // sign up text
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Sign Up",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+                  //top text
+                  const Text(
+                    "ASQUE",
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
 
-                /// text fields
-                /// user name field
-                CustomTextField(
-                    iconName: const Icon(
-                      Icons.person_rounded,
-                      color: Colors.white,
-                    ),
-                    controller: userNameController,
-                    hintText: "Username",
-                    obscureText: false),
-                const SizedBox(
-                  height: 15,
-                ),
+                  // sign up text
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
 
-                // email field
-                CustomTextField(
-                    iconName: const Icon(
-                      Icons.mail,
-                      color: Colors.white,
-                    ),
-                    controller: emailController,
-                    hintText: "Email",
-                    obscureText: false),
-                const SizedBox(
-                  height: 15,
-                ),
-                // password field
-                CustomTextField(
-                    iconName: const Icon(
-                      Icons.lock,
-                      color: Colors.white,
-                    ),
-                    controller: passwordController,
-                    hintText: "Create password",
-                    suffixIcon: IconButton(
-                      icon: passVisibility
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                      color: Colors.white,
-                      onPressed: () {
-                        setState(() {
-                          passVisibility = !passVisibility;
-                        });
-                      },
-                    ),
-                    obscureText: passVisibility ? false : true),
-                const SizedBox(
-                  height: 15,
-                ),
+                  /// text fields
+                  /// user name field
+                  CustomTextField(
+                      iconName: const Icon(
+                        Icons.person_rounded,
+                        color: Colors.white,
+                      ),
+                      controller: userNameController,
+                      hintText: "Username",
+                      obscureText: false),
+                  const SizedBox(
+                    height: 15,
+                  ),
 
-                //confirm password
-                CustomTextField(
-                    iconName: const Icon(
-                      Icons.lock,
-                      color: Colors.white,
-                    ),
-                    controller: confirmPasswordController,
-                    hintText: "Confirm password",
-                    suffixIcon: IconButton(
-                      icon: confirmPassVisibility
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                      color: Colors.white,
-                      onPressed: () {
-                        setState(() {
-                          confirmPassVisibility = !confirmPassVisibility;
-                        });
-                      },
-                    ),
-                    obscureText: confirmPassVisibility ? false : true),
-
-                // check box and terms and condition
-                const SizedBox(height: 32),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(1)),
-                          border: Border.fromBorderSide(BorderSide(
-                              width: 0.2, color: Colors.grey.shade400))),
-                      child: Checkbox(
-                        activeColor: const Color.fromARGB(
-                          255,
-                          172,
-                          113,
-                          92,
-                        ),
-                        checkColor: Colors.white,
-                        value: isChecked,
-                        onChanged: (value) {
+                  // email field
+                  CustomTextField(
+                      iconName: const Icon(
+                        Icons.mail,
+                        color: Colors.white,
+                      ),
+                      controller: emailController,
+                      hintText: "Email",
+                      obscureText: false),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  // password field
+                  CustomTextField(
+                      iconName: const Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                      ),
+                      controller: passwordController,
+                      hintText: "Create password",
+                      suffixIcon: IconButton(
+                        icon: passVisibility
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
+                        color: Colors.white,
+                        onPressed: () {
                           setState(() {
-                            isChecked = !isChecked;
+                            passVisibility = !passVisibility;
                           });
                         },
                       ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    const Text(
-                      'I agree to the privacy terms and condition ',
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],
-                ),
-                // sign up button
-                const SizedBox(
-                  height: 25,
-                ),
-                CustomButton(btnTitle: 'Sign Up', onTap: signUpFunction),
+                      obscureText: passVisibility ? false : true),
+                  const SizedBox(
+                    height: 15,
+                  ),
 
-                // other options
-                isLoading
-                    ? CircularProgressIndicator(
-                      backgroundColor: Color.fromRGBO(20, 100, 20, 5),
-                      color: CustomAppTheme().primary,
-                    )
-                    : errorMessage.isNotEmpty
-                        ? Text(
-                            errorMessage,
-                            style: TextStyle(color: Colors.red),
-                          )
-                        : const SizedBox(
-                            height: 68,
-                          ),
-                // or sign up with
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey.shade600,
-                        ),
+                  //confirm password
+                  CustomTextField(
+                      iconName: const Icon(
+                        Icons.lock,
+                        color: Colors.white,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          "Or Sign up with",
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // google and face book options
-                const SizedBox(
-                  height: 50,
-                ),
-                Container(
-                  width: 350,
-                  padding: const EdgeInsets.all(8),
-                  height: 40,
-                  decoration: BoxDecoration(
-                    border: Border.fromBorderSide(
-                        BorderSide(color: Colors.grey.shade400, width: 0.5)),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/google.png',
-                        width: 24,
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      const Text(
-                        "Sign Up with Google",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ),
-
-                /// facebook sign up
-                const SizedBox(
-                  height: 17,
-                ),
-                Container(
-                  width: 350,
-                  padding: const EdgeInsets.all(8),
-                  height: 40,
-                  decoration: BoxDecoration(
-                    border: Border.fromBorderSide(
-                        BorderSide(color: Colors.grey.shade400, width: 0.5)),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/facebook.png',
-                        width: 24,
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      const Text(
-                        "Sign Up with Facebook",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // already a user text
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Already a user?',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.bottomToTop,
-                                  curve: Curves.bounceOut,
-                                  duration: const Duration(seconds: 2),
-                                  child: const SignInScreen()));
+                      controller: confirmPasswordController,
+                      hintText: "Confirm password",
+                      suffixIcon: IconButton(
+                        icon: confirmPassVisibility
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            confirmPassVisibility = !confirmPassVisibility;
+                          });
                         },
-                        child:  Text(
-                          "Sign In here",
-                          style: TextStyle(
-                            color: CustomAppTheme().primary
+                      ),
+                      obscureText: confirmPassVisibility ? false : true),
+
+                  // check box and terms and condition
+                  const SizedBox(height: 32),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(1)),
+                            border: Border.fromBorderSide(BorderSide(
+                                width: 0.2, color: Colors.grey.shade400))),
+                        child: Checkbox(
+                          activeColor: const Color.fromARGB(
+                            255,
+                            172,
+                            113,
+                            92,
                           ),
-                        ))
-                  ],
-                )
-              ],
+                          checkColor: Colors.white,
+                          value: isChecked,
+                          onChanged: (value) {
+                            setState(() {
+                              isChecked = !isChecked;
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      const Text(
+                        'I agree to the privacy terms and condition ',
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                  // sign up button
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  CustomButton(
+                      btnTitle: 'Sign Up',
+                      onTap: () => signUpFunction(context)),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const SizedBox(
+                    height: 68,
+                  ),
+                  // or sign up with
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            thickness: 0.5,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            "Or Sign up with",
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            thickness: 0.5,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // google and face book options
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    width: 350,
+                    padding: const EdgeInsets.all(8),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      border: Border.fromBorderSide(
+                          BorderSide(color: Colors.grey.shade400, width: 0.5)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/google.png',
+                          width: 24,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        const Text(
+                          "Sign Up with Google",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// facebook sign up
+                  const SizedBox(
+                    height: 17,
+                  ),
+                  Container(
+                    width: 350,
+                    padding: const EdgeInsets.all(8),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      border: Border.fromBorderSide(
+                          BorderSide(color: Colors.grey.shade400, width: 0.5)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/facebook.png',
+                          width: 24,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        const Text(
+                          "Sign Up with Facebook",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // already a user text
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Already a user?',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.bottomToTop,
+                                    curve: Curves.bounceOut,
+                                    duration: const Duration(seconds: 2),
+                                    child: const SignInScreen()));
+                          },
+                          child: Text(
+                            "Sign In here",
+                            style: TextStyle(color: CustomAppTheme().primary),
+                          ))
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

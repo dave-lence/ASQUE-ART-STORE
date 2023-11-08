@@ -10,19 +10,25 @@ class CustomAppTheme {
 }
 
 
-
-final customTheme = ThemeData(
-  primaryColor: Colors.purple, // Define your primary color
-  hintColor: Colors.lightBlue, // Define your accent color
-  
-  backgroundColor: Colors.grey.shade100, // Define background color
-  textTheme: TextTheme(
-    headline1: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.black),
-    headline2: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, color: Colors.black),
-    headline3: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.black),
-    bodyText1: TextStyle(fontSize: 16.0, color: Colors.black),
-    bodyText2: TextStyle(fontSize: 14.0, color: Colors.grey),
-  ),
+ThemeData lightMode  = ThemeData(
+  brightness: Brightness.light,
+  colorScheme: ColorScheme.light(
+    background: Colors.white,
+    primary: Colors.black,
+    secondary: Colors.grey.shade400,
+  )
 );
+ThemeData darkMode  = ThemeData(
+  brightness: Brightness.dark,
+  colorScheme: ColorScheme.dark(
+    background: Colors.grey.shade800,
+    primary: Colors.white,
+    secondary: Colors.grey.shade400,
+
+  )
+);
+
+
+
 
 

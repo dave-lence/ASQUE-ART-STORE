@@ -1,5 +1,7 @@
+import 'package:asque_art_store/config/theme.dart';
 import 'package:asque_art_store/screens/cart_screen.dart';
 import 'package:asque_art_store/screens/product_screen.dart';
+import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -21,7 +23,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.grey.shade800,
         leading: IconButton(
           icon: const Icon(Icons.logout_outlined),
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: Duration(seconds: 4),
+              content: Text("Login you out...."),
+
+              backgroundColor: CustomAppTheme()
+                  .primary, // Set the background color to red for error messages
+            ));
+
+            Future.delayed(Duration(seconds: 5), () {
+              Navigator.of(context).pushAndRemoveUntil(
+                PageTransition(
+                  duration: Duration(seconds: 1),
+                  type: PageTransitionType.leftToRight,
+                  child: SignInScreen(),
+                ),
+                (Route<dynamic> route) => false,
+              );
+            });
+          },
         ),
         actions: [
           IconButton(

@@ -14,218 +14,82 @@ class CartScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
       ),
       backgroundColor: Colors.grey.shade800,
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 10),
+            padding: EdgeInsets.only(top: 10),
             child: Column(
-             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: <Widget>[
-                     CartCard(),
-                     CartCard(),
-                     CartCard(),
-                     CartCard(),
-                     CartCard(),
-                     
+                      CartCard(),
+                      CartCard(),
+                      
                     ],
                   ),
                 ),
 
-                // devilery location and summary
-                
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 440,
-                    margin: const EdgeInsets.only(top: 30),
-                    decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20))),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            padding: const EdgeInsets.all(10),
-                            height: 90,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "Delivery Address",
-                                  style: TextStyle(
-                                      color: Colors.orange.shade600,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    const Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        Text(
-                                          "141 Grace street",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        Text(
-                                          "Lekki, Lagos, Nigeria",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      "Change address",
-                                      style: TextStyle(
-                                          color: Colors.orange.shade600),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 170,
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              "Summary",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const Text(
+                  "Tax & Fee:",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '\$10.00',
+                  style: TextStyle(
+                       color: Colors.orange.shade600),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  const Text(
+                    "Total",
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '\$21,000',
+                    style: TextStyle(
+                         color: Colors.orange.shade600),
+                  )
+                ]),
 
-                        /// summary
-                        Container(
-                          padding: const EdgeInsets.all(20),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Summary",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Arthdal Chronicles",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    '\$2,000',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Arthdal Chronicles",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    '\$2,000',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Arthdal Chronicles",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    '\$2,000',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Tax & Fee",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    '\$10.00',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )
-                                ],
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Divider(
-                                  thickness: 1,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Total",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    '\$21,000',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: CustomAppTheme().primary,
@@ -237,18 +101,9 @@ class CartScreen extends StatelessWidget {
                                 style: TextStyle(color: Colors.white),
                               )),
                         )
-                      ],
-                    ),
-                  ),
-                ),
-
-
-              ],
-            ),
-          ),
+          ],
         ),
       ),
-      
     );
   }
 }

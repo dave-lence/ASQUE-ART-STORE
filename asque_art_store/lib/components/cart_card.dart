@@ -15,7 +15,7 @@ class CartCard extends StatelessWidget {
       decoration: BoxDecoration(boxShadow: const [
         BoxShadow(
             color: Colors.black, offset: Offset(4, 5), blurRadius: 8)
-      ], color: Colors.black, borderRadius: BorderRadius.circular(10)),
+      ], color: Colors.grey.shade800, borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
