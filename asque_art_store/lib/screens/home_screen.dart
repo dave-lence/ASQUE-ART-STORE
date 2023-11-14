@@ -79,22 +79,8 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: const BoxDecoration(
-                                border: Border.fromBorderSide(
-                                    BorderSide(color: Colors.white)),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50))),
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.person_rounded,
-                                  color: Colors.white,
-                                  size: 20,
-                                )),
-                          )
+                          
+                          
                         ],
                       )
                     ],

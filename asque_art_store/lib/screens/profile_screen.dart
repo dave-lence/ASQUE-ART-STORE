@@ -1,9 +1,9 @@
 import 'package:asque_art_store/config/theme.dart';
-import 'package:asque_art_store/screens/cart_screen.dart';
-import 'package:asque_art_store/screens/product_screen.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:page_transition/page_transition.dart';
+import 'dart:io';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -14,6 +14,17 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  File? _image;
+  final ImagePicker imagePicker = ImagePicker();
+
+  Future getImageFromGallery() async {
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = File(pickedFile!.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,14 +91,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: Image.asset(
-                          "assets/profile.jpg",
-                          fit: BoxFit.cover,
-                          height: 80,
-                          width: 80,
-                        ),
+                      Stack(
+                        children: [
+                          _image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                    height: 80,
+                                    width: 80,
+                                  ),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: Icon(
+                                    Icons.person_4_rounded,
+                                    size: 80,
+                                    color: Colors.white,
+                                  )),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: getImageFromGallery,
+                              child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: CustomAppTheme().primary),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          )
+                        ],
                       ),
                       const Text(
                         "Name of user",

@@ -33,8 +33,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     final signUpProvider = Provider.of<ClientProvider>(context, listen: false);
     final result = await signUpProvider.signUp(
-        emailController.text,
         userNameController.text,
+        emailController.text,
         passwordController.text,
         confirmPasswordController.text);
 
@@ -45,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         elevation: 8,
         showCloseIcon: true,
         duration: const Duration(seconds: 10),
-        content: Text("Hello ${userNameController.text}, welcom on board!"),
+        content: Text("Hello ${userNameController.text}, welcome on board!"),
         backgroundColor: CustomAppTheme()
             .primary, // Set the background color to red for error messages
       ));

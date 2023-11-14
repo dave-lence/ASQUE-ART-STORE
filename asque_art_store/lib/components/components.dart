@@ -6,3 +6,4 @@ export 'trending_product_card.dart';
 export 'product_card.dart';
 export 'product_list.dart';
 export 'cart_card.dart';
+export 'favourite_card.dart';

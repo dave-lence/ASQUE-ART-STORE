@@ -1,5 +1,7 @@
 import 'package:asque_art_store/components/components.dart';
 import 'package:asque_art_store/config/theme.dart';
+import 'package:asque_art_store/models/prefrences_service.dart';
+import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -44,21 +46,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
-        color: Color.fromARGB(
-          255,
+      decoration:  BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: _currentPage == index ? Color.fromARGB(
+        255,
           172,
           113,
           92,
-        ),
+        ) : Colors.grey,
       ),
+      
       margin: const EdgeInsets.only(right: 5),
-      height: 10,
+      height: 2,
       curve: Curves.easeIn,
-      width: _currentPage == index ? 20 : 7,
+      width: 30,
     );
   }
 
@@ -148,19 +149,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
                           onPressed: () {
+                            PreferencesService.isFirstTime = false;
+                            _currentPage + 1 == splashData.length ?
                             Navigator.push(
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
                                     duration: const Duration(seconds: 2),
-                                    child: const SignUpScreen()));
+                                    child: const BottomNavBar())): _controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.ease);
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: CustomAppTheme().primary,
                               elevation: 6,
                               animationDuration: const Duration(seconds: 3)),
-                          child: const Text(
-                            'Sign Up',
+                          child: Text(
+                          _currentPage + 1 == splashData.length
+                              ? 'Go to app'
+                              : 'Next',
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: "Sofia",
@@ -170,20 +175,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                       ),
                     ),
-                    const Spacer(),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                        child: OutlineBtn(
-                          btnLabel: 'Sign In',
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    duration: const Duration(seconds: 2),
-                                    child: const SignInScreen()));
-                          },
-                        )),
+                   
                     const Spacer()
                   ]),
             ),

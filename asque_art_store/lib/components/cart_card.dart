@@ -1,11 +1,33 @@
+import 'package:asque_art_store/models/prefrences_service.dart';
 import 'package:flutter/material.dart';
 
-class CartCard extends StatelessWidget {
+class CartCard extends StatefulWidget {
   const CartCard({
     super.key,
   });
 
   @override
+  State<CartCard> createState() => _CartCardState();
+}
+
+class _CartCardState extends State<CartCard> {
+
+  int qtyCount = 0;
+  PreferencesService _preferences = PreferencesService();
+
+  @override
+   void initState() {
+    super.initState();
+    // Load the count from SharedPreferences when the page initializes
+    loadCount();
+  }
+
+  void loadCount() {
+ 
+    setState(() {
+      qtyCount = _preferences.getCartCount() ?? 0;
+    });
+  }
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -58,7 +80,17 @@ class CartCard extends StatelessWidget {
               Row(
                 children: <Widget>[
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if(qtyCount == 0){
+                          return;
+                        }else{
+
+                        setState(() {
+                          qtyCount--;
+                        });
+                        _preferences.setCartCount(qtyCount);
+                        }
+                      },
                       icon: const Icon(
                         Icons.remove_circle_sharp,
                         color: Colors.white,
@@ -66,15 +98,21 @@ class CartCard extends StatelessWidget {
                   const SizedBox(
                     width: 8,
                   ),
-                  const Text(
-                    '2',
+                  Text(
+                     qtyCount.toString(),
                     style: TextStyle(color: Colors.white),
                   ),
                   const SizedBox(
                     width: 8,
                   ),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        setState(() {
+                          qtyCount++;
+                          
+                        });
+                        await _preferences.setCartCount(qtyCount);
+                      },
                       icon: const Icon(
                         Icons.add_circle_sharp,
                         color: Colors.white,

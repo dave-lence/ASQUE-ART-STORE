@@ -10,7 +10,8 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade800,
+        title: Text("Cart page", style: TextStyle(color: CustomAppTheme().appWhite), ),
+        backgroundColor: CustomAppTheme().appBlack,
         automaticallyImplyLeading: true,
       ),
       backgroundColor: Colors.grey.shade800,

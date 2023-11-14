@@ -1,4 +1,8 @@
+import 'package:asque_art_store/models/prefrences_service.dart';
+import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
+import 'package:asque_art_store/screens/home_screen.dart';
 import 'package:asque_art_store/screens/onboarding_screen.dart';
+import 'package:asque_art_store/screens/splash_screen_or_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tbib_splash_screen/splash_screen_view.dart';
 
@@ -28,10 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
       home: SplashScreenView(
         navigateWhere: isLoaded,
         duration: const Duration(seconds: 8),
-        navigateRoute: const OnboardingScreen(),
+        navigateRoute: PreferencesService.isFirstTime ?  OnboardingScreen() : BottomNavBar(),
         pageRouteTransition: PageRouteTransition.CupertinoPageRoute,
-        backgroundColor: Colors.black,
-             
+        backgroundColor: Colors.black,             
        imageSrc:  "assets/splash.png",
         //  displayLoading: false,
       ),

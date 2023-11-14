@@ -2,23 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ClientProvider with ChangeNotifier{
+  
+  bool user = false;
+
   Future<String> signUp(String userName ,String email, String password, String confirmPassword) async{
      final apiUri = Uri.parse(
         'https://asque-media-development.onrender.com/api/v1/auth/register');
      try{
       final response = await http.post(apiUri,
       body: {
-        'email': email,
         'username': userName,
+        'email': email,
         'password': password,
         'confirmPassword': confirmPassword
       } 
       );
 
       if(response.statusCode == 201){
+        user = true;
         return 'success';
       } else{
         return 'Sign-up failed: ${response.body}';
+      
       } 
      }  catch(error) {
        return 'Sign-up failed: $error';
@@ -38,6 +43,7 @@ class ClientProvider with ChangeNotifier{
       );
 
       if(response.statusCode == 201){
+        user = true;
         return 'success';
       } else{
         return 'Sign-in failed: ${response.body}';
