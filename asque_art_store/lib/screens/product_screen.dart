@@ -1,18 +1,18 @@
 import 'package:asque_art_store/config/theme.dart';
+import 'package:asque_art_store/models/product_model.dart';
+import 'package:asque_art_store/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen(
-      {super.key,
-      required this.productImages,
-      required this.isAvailable,
-      required this.productName,
-      required this.productPrice});
-  final List<String> productImages;
-  final String productName;
-  final double productPrice;
-  final String isAvailable;
+  ProductScreen({
+    super.key,
+    required this.product,
+  });
+
+  final Product product;
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -23,6 +23,64 @@ class _ProductScreenState extends State<ProductScreen> {
   static int currentIndex = 0;
   String? dropDownValue = "Select Size";
   int qtyCount = 0;
+
+  void addToCartFunction() {
+    if (qtyCount > 0) {
+      final products = context.read<CartProvider>();
+
+      products.addToCart(widget.product, qtyCount);
+
+      setState(() {
+        
+      });
+     
+      Flushbar(
+        title: 'Success',
+        message: 'Product succefully added to cart',
+        icon: Icon(Icons.check_circle, color: Colors.greenAccent),
+        flushbarStyle: FlushbarStyle.FLOATING,
+        duration: Duration(seconds: 3),
+        backgroundColor: CustomAppTheme().appBlack,
+        flushbarPosition: FlushbarPosition.TOP,
+        forwardAnimationCurve: Curves.bounceInOut,
+        reverseAnimationCurve: Curves.bounceIn,
+        borderRadius: BorderRadius.circular(5),
+        leftBarIndicatorColor: CustomAppTheme().primary,
+        margin: EdgeInsets.all(20),
+        titleColor: CustomAppTheme().primary,
+        animationDuration: Duration(seconds: 1),
+        boxShadows: [
+          BoxShadow(
+              offset: Offset(5, 10),
+              color: CustomAppTheme().appBlack,
+              blurRadius: 8)
+        ],
+      )..show(context);
+    } else {
+      Flushbar(
+        title: 'NOTE',
+        message: 'You need to add atleast one product',
+        icon: Icon(Icons.warning_outlined, color: CustomAppTheme().appYello),
+        flushbarStyle: FlushbarStyle.FLOATING,
+        duration: Duration(seconds: 3),
+        backgroundColor: CustomAppTheme().appBlack,
+        flushbarPosition: FlushbarPosition.TOP,
+        forwardAnimationCurve: Curves.bounceInOut,
+        reverseAnimationCurve: Curves.bounceIn,
+        borderRadius: BorderRadius.circular(5),
+        leftBarIndicatorColor: CustomAppTheme().primary,
+        margin: EdgeInsets.all(20),
+        titleColor: CustomAppTheme().appYello,
+        animationDuration: Duration(seconds: 1),
+        boxShadows: [
+          BoxShadow(
+              offset: Offset(5, 10),
+              color: CustomAppTheme().appBlack,
+              blurRadius: 8)
+        ],
+      )..show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +109,12 @@ class _ProductScreenState extends State<ProductScreen> {
                         });
                       },
                       controller: PageController(initialPage: currentIndex),
-                      itemCount: widget.productImages.length,
+                      itemCount: widget.product.imageUrls.length,
                       itemBuilder: (context, index) {
                         return AspectRatio(
                           aspectRatio: 5 / 96,
                           child: Image.network(
-                            widget.productImages[index],
+                            widget.product.imageUrls[index],
                             fit: BoxFit.cover,
                             width: 100,
                           ),
@@ -93,7 +151,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DotsIndicator(
-                    dotsCount: widget.productImages.length,
+                    dotsCount: widget.product.imageUrls.length,
                     position: currentIndex.toInt(),
                     decorator: DotsDecorator(
                       activeColor: CustomAppTheme()
@@ -111,7 +169,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         style: const TextStyle(color: Colors.grey),
                         children: <TextSpan>[
                       TextSpan(
-                          text: '${widget.productName}:',
+                          text: '${widget.product.prodName}:',
                           style: TextStyle(
                               color: Colors.orange[800],
                               fontSize: 18,
@@ -153,7 +211,6 @@ class _ProductScreenState extends State<ProductScreen> {
                               : null,
                           isDense: true,
                           borderRadius: BorderRadius.circular(2),
-                        
                           iconEnabledColor: CustomAppTheme().appWhite,
                           underline: null,
                           dropdownColor: CustomAppTheme().appBlack,
@@ -213,7 +270,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         text: "Availability:  ",
                         style: TextStyle(color: Colors.white)),
                     TextSpan(
-                        text: widget.isAvailable,
+                        text: widget.product.isAvailable,
                         style: TextStyle(color: Colors.orange[800]))
                   ]))),
               Padding(
@@ -225,7 +282,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         text: "Price:  ",
                         style: TextStyle(color: Colors.white)),
                     TextSpan(
-                        text: '\$${widget.productPrice}',
+                        text: '\$${widget.product.price}',
                         style: TextStyle(color: Colors.orange[800]))
                   ]))),
 
@@ -239,12 +296,12 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   IconButton(
                       onPressed: () {
-                        if(qtyCount == 0) {
+                        if (qtyCount == 0) {
                           return;
                         } else {
-                        setState(() {
-                         qtyCount = qtyCount - 1;
-                        });
+                          setState(() {
+                            qtyCount = qtyCount - 1;
+                          });
                         }
                       },
                       icon: const Icon(
@@ -254,7 +311,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   const SizedBox(
                     width: 8,
                   ),
-                   Text(
+                  Text(
                     qtyCount.toString(),
                     style: TextStyle(color: Colors.white),
                   ),
@@ -329,7 +386,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         backgroundColor: CustomAppTheme().primary,
                         minimumSize: const Size(double.infinity, 40),
                       ),
-                      onPressed: () {},
+                      onPressed: addToCartFunction,
                       child: const Text(
                         "Add to Cart",
                         style: TextStyle(color: Colors.white),

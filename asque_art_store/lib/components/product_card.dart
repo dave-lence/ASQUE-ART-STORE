@@ -1,19 +1,57 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:asque_art_store/config/theme.dart';
 import 'package:asque_art_store/models/product_model.dart';
+import 'package:asque_art_store/providers/favourite_provider.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   const ProductCard({super.key, required this.product});
   final Product product;
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+   void addToFavFunction() {  
+
+      final products = context.read<FavProvider>();
+      products.addToFav(widget.product);
+     
+      Flushbar(
+        title: 'Success',
+        message: 'Product succefully added to your Favourite collections',
+        icon: Icon(Icons.favorite, color: Colors.red),
+        flushbarStyle: FlushbarStyle.FLOATING,
+        duration: Duration(seconds: 3),
+        backgroundColor: CustomAppTheme().appBlack,
+        flushbarPosition: FlushbarPosition.TOP,
+        forwardAnimationCurve: Curves.bounceInOut,
+        reverseAnimationCurve: Curves.bounceIn,
+        borderRadius: BorderRadius.circular(5),
+        leftBarIndicatorColor: CustomAppTheme().primary,
+        margin: EdgeInsets.all(20),
+        titleColor: CustomAppTheme().primary,
+        animationDuration: Duration(seconds: 1),
+        boxShadows: [
+          BoxShadow(
+              offset: Offset(5, 10),
+              color: CustomAppTheme().appBlack,
+              blurRadius: 8)
+        ],
+      )..show(context);
+    } 
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 5),
       child: Container(
         padding: const EdgeInsets.all(5),
-        height: 250,
+        //height: 250,
         width: 150,
         decoration: BoxDecoration(
             boxShadow: [
@@ -33,7 +71,7 @@ class ProductCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    product.imageUrls.first,
+                    widget.product.imageUrls.first,
                     width: 138,
                     height: 130,
                     fit: BoxFit.cover,
@@ -44,7 +82,7 @@ class ProductCard extends StatelessWidget {
                   right: 5,
                   child: Container(
                       child: IconButton(
-                          onPressed: () {},
+                          onPressed: addToFavFunction,
                           icon: const Icon(
                             Icons.favorite,
                             color: Colors.white,
@@ -73,7 +111,7 @@ class ProductCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      product.prodName,
+                      widget.product.prodName,
                       style: const TextStyle(
                           fontWeight: FontWeight.w600, color: Colors.white),
                     ),
@@ -81,7 +119,7 @@ class ProductCard extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      '\$${product.price}',
+                      '\$${widget.product.price}',
                       style: const TextStyle(
                         color: Color.fromARGB(
                           255,
@@ -102,10 +140,7 @@ class ProductCard extends StatelessWidget {
                           context,
                           PageTransition(
                             child: ProductScreen(
-                              productImages: product.imageUrls,
-                              productName: product.prodName,
-                              productPrice: product.price,
-                              isAvailable: product.isAvailable,
+                              product: widget.product
                             ),
                             duration: Duration(seconds: 1),
                             type: PageTransitionType.leftToRightWithFade,

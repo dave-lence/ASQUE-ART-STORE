@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:asque_art_store/models/product_model.dart';
 
-class ClientProvider with ChangeNotifier{
+class SignUpProvider with ChangeNotifier{
   
   bool user = false;
 
@@ -10,6 +11,7 @@ class ClientProvider with ChangeNotifier{
         'https://asque-media-development.onrender.com/api/v1/auth/register');
      try{
       final response = await http.post(apiUri,
+      headers: {'Content-Type': 'application/json'},
       body: {
         'username': userName,
         'email': email,
@@ -52,4 +54,6 @@ class ClientProvider with ChangeNotifier{
        return 'Sig-in failed: $error';
      }
   }
+   
+
 }

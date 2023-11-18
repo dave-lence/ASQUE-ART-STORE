@@ -8,7 +8,7 @@ class SplashOrHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClientProvider>(
+    return Consumer<SignUpProvider>(
       builder: (context, user, child) {
         if (user.user) {
           // Render this widget when myBoolValue is true

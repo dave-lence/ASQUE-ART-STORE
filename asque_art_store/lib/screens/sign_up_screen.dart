@@ -1,10 +1,13 @@
+import 'dart:convert';
+import 'package:asque_art_store/models/sign_up_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:another_flushbar/flushbar.dart';
 import 'package:asque_art_store/components/components.dart';
 import 'package:asque_art_store/config/theme.dart';
-import 'package:asque_art_store/models/client_logic.dart';
 import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:page_transition/page_transition.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -31,46 +34,82 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isLoading = true;
     });
 
-    final signUpProvider = Provider.of<ClientProvider>(context, listen: false);
-    final result = await signUpProvider.signUp(
-        userNameController.text,
-        emailController.text,
-        passwordController.text,
-        confirmPasswordController.text);
+    SignUpModel userData = SignUpModel(
+        email: emailController.text.trim(),
+        username: userNameController.text.trim(),
+        password: passwordController.text.trim(),
+        confirmPassword: confirmPasswordController.text.trim());
 
-    await Future.delayed(const Duration(seconds: 5));
-    if (result == "success") {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        closeIconColor: Colors.white,
-        elevation: 8,
-        showCloseIcon: true,
-        duration: const Duration(seconds: 10),
-        content: Text("Hello ${userNameController.text}, welcome on board!"),
-        backgroundColor: CustomAppTheme()
-            .primary, // Set the background color to red for error messages
-      ));
-      Navigator.of(context).pushAndRemoveUntil(
-        PageTransition(
-          duration: const Duration(seconds: 1),
-          type: PageTransitionType.rightToLeft,
-          child: const BottomNavBar(),
-        ),
-        (Route<dynamic> route) => false,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 15),
-        closeIconColor: Colors.white,
-        elevation: 8,
-        showCloseIcon: true,
-        content: Text(result),
-        backgroundColor:
-            Colors.red, // Set the background color to red for error messages
-      ));
+    final apiUri = Uri.parse(
+        'https://asque-media-development.onrender.com/api/v1/auth/register');
 
+    try {
+      final response = await http.post(apiUri,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(userData.toJson()));
+
+      if (response.statusCode == 201) {
+        setState(() {
+          isLoading = false;
+        });
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //   closeIconColor: Colors.white,
+        //   elevation: 8,
+        //   showCloseIcon: true,
+        //   duration: const Duration(seconds: 10),
+        //   content: Text("Hello ${userNameController.text}, welcome on board!"),
+        //   backgroundColor: CustomAppTheme()
+        //       .primary, // Set the background color to red for error messages
+        // ));
+        // Navigator.pushReplacement(
+        //   context,
+        //   PageTransition(
+        //     duration: const Duration(seconds: 1),
+        //     type: PageTransitionType.rightToLeft,
+        //     child: const BottomNavBar(),
+        //   ),
+        // );
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        print(response.body);
+
+        
+
+        Map<String, dynamic> responseMap = jsonDecode(response.body);
+        final message = responseMap['message'];
+        showFlushbar(
+            context,
+            'Sign Up error',
+            Colors.black,
+            response.body,
+            Icon(
+              Icons.error,
+              color: Colors.black,
+            ),
+            Colors.black,
+            Colors.orange);
+            print(response.body);
+      }
+    } catch (error) {
       setState(() {
         isLoading = false;
       });
+      print('Sign-up failed: $error');
+
+      showFlushbar(
+          context,
+          'Sign Up error',
+          Colors.black,
+          error.toString(),
+          Icon(
+            Icons.error,
+            color: Colors.black,
+          ),
+          Colors.black,
+          Colors.orange);
     }
   }
 
@@ -129,11 +168,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   /// user name field
                   CustomTextField(
                       iconName: const Icon(
-                        Icons.person_rounded,
+                        Icons.email,
                         color: Colors.white,
                       ),
-                      controller: userNameController,
-                      hintText: "Username",
+                      controller: emailController,
+                      hintText: "Email",
                       obscureText: false),
                   const SizedBox(
                     height: 15,
@@ -142,11 +181,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // email field
                   CustomTextField(
                       iconName: const Icon(
-                        Icons.mail,
+                        Icons.person,
                         color: Colors.white,
                       ),
-                      controller: emailController,
-                      hintText: "Email",
+                      controller: userNameController,
+                      hintText: "User Name",
                       obscureText: false),
                   const SizedBox(
                     height: 15,
@@ -380,5 +419,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  // flush bar
+  void showFlushbar(BuildContext context, String title, Color titleColor,
+      String message, Icon icon, Color messageColor, Color backgroundColor) {
+    Flushbar(
+      title: title,
+      titleColor: titleColor,
+      message: message,
+      icon: icon,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      duration: Duration(seconds: 6),
+      animationDuration: Duration(seconds: 1),
+      dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+      forwardAnimationCurve: Curves.bounceInOut,
+      flushbarPosition: FlushbarPosition.TOP,
+      borderRadius: BorderRadius.circular(5),
+      backgroundColor: backgroundColor,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      messageColor: messageColor,
+      boxShadows: [
+        BoxShadow(
+            color: CustomAppTheme().appBlack,
+            offset: Offset(2, 4),
+            blurRadius: 10)
+      ],
+    )..show(context);
   }
 }

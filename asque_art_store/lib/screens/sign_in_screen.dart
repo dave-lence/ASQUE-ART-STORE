@@ -25,7 +25,7 @@ class _SignInScreenState extends State<SignInScreen> {
       isLoading = true;
     });
 
-    final signInProvider = Provider.of<ClientProvider>(context, listen: false);
+    final signInProvider = Provider.of<SignUpProvider>(context, listen: false);
     final result = await signInProvider.signIn(
         emailController.text, passwordController.text);
 

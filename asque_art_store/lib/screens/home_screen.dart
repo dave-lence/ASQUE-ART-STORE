@@ -1,21 +1,37 @@
 import 'package:asque_art_store/components/components.dart';
 import 'package:asque_art_store/components/trending_prod_list.dart';
 import 'package:asque_art_store/models/product_model.dart';
+import 'package:asque_art_store/providers/cart_provider.dart';
 import 'package:asque_art_store/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({
     super.key,
+    this.product
   });
 
-  //final  product =  Product;
+ final  Product? product;
 
-  final _searchController = TextEditingController();
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+  final products = context.read<CartProvider>();
+  final product = products.productList;
+  String cartLenght = "";
+
+  setState(() {
+    cartLenght = products.cart.length.toString();
+  });
+
     return Scaffold(
       backgroundColor: Colors.grey.shade800,
       body: SafeArea(
@@ -66,10 +82,10 @@ class HomeScreen extends StatelessWidget {
                                       duration: Duration(seconds: 1),
                                       type: PageTransitionType.bottomToTop));
                             },
-                            icon: const Badge(
+                            icon:   Badge(
                               largeSize: Checkbox.width,
                               isLabelVisible: true,
-                              label: Text("3"),
+                              label: Text('${cartLenght}'),
                               textColor: Colors.white,
                               backgroundColor: Colors.red,
                               child: Icon(
@@ -100,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                               Icons.search,
                               color: Colors.white,
                             ),
-                            controller: _searchController,
+                            controller: searchController,
                             hintText: 'Ex. nigerian art',
                             obscureText: false),
                       )),
@@ -149,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   TrendingProdList(
-                      products: Product.products
+                      products: product
                           .where((prduct) => prduct.isTrending)
                           .toList()),
 
@@ -167,7 +183,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   ProductList(
-                      products: Product.products
+                      products: product
                           .where((product) => product.isArt)
                           .toList()),
 
@@ -183,7 +199,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   ProductList(
-                      products: Product.products
+                      products: product
                           .where((product) => product.isSculpture)
                           .toList()),
 
@@ -199,7 +215,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   ProductList(
-                      products: Product.products
+                      products: product
                           .where((product) => product.isArt)
                           .toList()),
 
@@ -215,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   ProductList(
-                      products: Product.products
+                      products: product
                           .where((product) => product.isFineArt)
                           .toList()),
 
@@ -231,7 +247,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                   ProductList(
-                      products: Product.products
+                      products: product
                           .where((product) => product.isArt)
                           .toList()),
                 ],
