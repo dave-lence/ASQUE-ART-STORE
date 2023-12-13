@@ -52,58 +52,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
         setState(() {
           isLoading = false;
         });
-        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //   closeIconColor: Colors.white,
-        //   elevation: 8,
-        //   showCloseIcon: true,
-        //   duration: const Duration(seconds: 10),
-        //   content: Text("Hello ${userNameController.text}, welcome on board!"),
-        //   backgroundColor: CustomAppTheme()
-        //       .primary, // Set the background color to red for error messages
-        // ));
-        // Navigator.pushReplacement(
-        //   context,
-        //   PageTransition(
-        //     duration: const Duration(seconds: 1),
-        //     type: PageTransitionType.rightToLeft,
-        //     child: const BottomNavBar(),
-        //   ),
-        // );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          closeIconColor: Colors.white,
+          elevation: 8,
+          showCloseIcon: true,
+          duration: const Duration(seconds: 10),
+          content: Text("Hello ${userNameController.text}, welcome on board!"),
+          backgroundColor: CustomAppTheme()
+              .primary, // Set the background color to red for error messages
+        ));
+        Navigator.pushReplacement(
+          context,
+          PageTransition(
+            duration: const Duration(seconds: 1),
+            type: PageTransitionType.rightToLeft,
+            child: const BottomNavBar(),
+          ),
+        );
       } else {
         setState(() {
           isLoading = false;
         });
 
-        print(response.body);
+        //   print(response.body);
 
-        
+        Map<String, dynamic> responseMap = jsonDecode(response.body.toString());
+        List<dynamic> errorMessages = responseMap['message'];
 
-        Map<String, dynamic> responseMap = jsonDecode(response.body);
-        final message = responseMap['message'];
-        showFlushbar(
-            context,
-            'Sign Up error',
-            Colors.black,
-            response.body,
-            Icon(
-              Icons.error,
-              color: Colors.black,
-            ),
-            Colors.black,
-            Colors.orange);
-            print(response.body);
+        errorMessages.forEach((message) {
+          return showFlushbar(
+              context,
+              'Sign Up error',
+              Colors.black,
+              message,
+              Icon(
+                Icons.error,
+                color: Colors.black,
+              ),
+              Colors.black,
+              Colors.orange);
+        });
       }
     } catch (error) {
       setState(() {
         isLoading = false;
       });
-      print('Sign-up failed: $error');
 
       showFlushbar(
           context,
           'Sign Up error',
           Colors.black,
-          error.toString(),
+          'Make sure your credentials are inputed well and your password match',
           Icon(
             Icons.error,
             color: Colors.black,
@@ -167,6 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   /// text fields
                   /// user name field
                   CustomTextField(
+                    fillColor: false,
                       iconName: const Icon(
                         Icons.email,
                         color: Colors.white,
@@ -180,6 +180,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   // email field
                   CustomTextField(
+                    fillColor: false,
                       iconName: const Icon(
                         Icons.person,
                         color: Colors.white,
@@ -192,6 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   // password field
                   CustomTextField(
+                    fillColor: false,
                       iconName: const Icon(
                         Icons.lock,
                         color: Colors.white,
@@ -216,6 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   //confirm password
                   CustomTextField(
+                    fillColor: false,
                       iconName: const Icon(
                         Icons.lock,
                         color: Colors.white,
@@ -403,13 +406,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 PageTransition(
                                     type: PageTransitionType.bottomToTop,
                                     curve: Curves.bounceOut,
-                                    duration: const Duration(seconds: 2),
+                                    duration: const Duration(milliseconds: 500),
                                     child: const SignInScreen()));
                           },
                           child: Text(
                             "Sign In here",
                             style: TextStyle(color: CustomAppTheme().primary),
-                          ))
+                          )),
+                      SizedBox(
+                        height: 50,
+                      )
                     ],
                   )
                 ],

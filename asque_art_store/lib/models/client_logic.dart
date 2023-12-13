@@ -32,28 +32,7 @@ class SignUpProvider with ChangeNotifier{
      }
   }
 
-  Future<String> signIn(String email, String password) async{
-     final apiUri = Uri.parse(
-        'https://asque-media-development.onrender.com/api/v1/auth/login');
-     try{
-      final response = await http.post(apiUri,
-      body: {
-        'email': email,
-        'password': password,
-       
-      } 
-      );
-
-      if(response.statusCode == 201){
-        user = true;
-        return 'success';
-      } else{
-        return 'Sign-in failed: ${response.body}';
-      } 
-     }  catch(error) {
-       return 'Sig-in failed: $error';
-     }
-  }
+ 
    
 
 }

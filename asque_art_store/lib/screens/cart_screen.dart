@@ -2,7 +2,9 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:asque_art_store/config/theme.dart';
 import 'package:asque_art_store/models/product_model.dart';
 import 'package:asque_art_store/providers/cart_provider.dart';
+import 'package:asque_art_store/screens/checkout_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -64,51 +66,59 @@ class _CartScreenState extends State<CartScreen> {
           automaticallyImplyLeading: true,
         ),
         backgroundColor: Colors.grey.shade800,
-        body: ListView.builder(
-            itemCount: value.cart.length,
-            itemBuilder: (context, index) {
-              final Product product = value.cart[index];
-              final String productImage = product.imageUrls.first;
-              final String productName = product.prodName;
-              final double productPrice = product.price;
-
-              return Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-
-                //  height: 116,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black,
-                          offset: Offset(4, 5),
-                          blurRadius: 8)
-                    ],
-                    color: Colors.grey.shade800,
-                    borderRadius: BorderRadius.circular(10)),
-                child: ListTile(
-                  trailing: IconButton(
-                      onPressed: () => removeFromFunction(product, context),
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.orange.shade600,
-                      )),
-                  title: Text(
-                    productName,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text('\$${productPrice}',
-                      style: TextStyle(color: Colors.grey.shade400)),
-                  leading: Image.network(
-                    productImage,
-                    width: 83,
-                    height: 83,
-                    fit: BoxFit.cover,
-                  ),
+        body: cartProvider.cart.isEmpty
+            ? Center(
+                child: Image.asset(
+                  'assets/cartanime.gif',
+                  width: 300,
+                  height: 300,
                 ),
-              );
-            }),
+              )
+            : ListView.builder(
+                itemCount: value.cart.length,
+                itemBuilder: (context, index) {
+                  final Product product = value.cart[index];
+                  final String productImage = product.imageUrls.first;
+                  final String productName = product.prodName;
+                  final double productPrice = product.price;
+
+                  return Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+
+                    //  height: 116,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.black,
+                              offset: Offset(4, 5),
+                              blurRadius: 8)
+                        ],
+                        color: Colors.grey.shade800,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      trailing: IconButton(
+                          onPressed: () => removeFromFunction(product, context),
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.orange.shade600,
+                          )),
+                      title: Text(
+                        productName,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      subtitle: Text('\$${productPrice}',
+                          style: TextStyle(color: Colors.grey.shade400)),
+                      leading: Image.network(
+                        productImage,
+                        width: 83,
+                        height: 83,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                }),
         bottomNavigationBar: Container(
           height: 170,
           padding: const EdgeInsets.all(10),
@@ -168,7 +178,52 @@ class _CartScreenState extends State<CartScreen> {
                       backgroundColor: CustomAppTheme().primary,
                       minimumSize: const Size(double.infinity, 40),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (totalPrice == 0.0 || cartProvider.cart.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: CustomAppTheme().primary,
+                              elevation: 10,
+                              icon: Icon(
+                                Icons.add_shopping_cart_outlined,
+                                color: Colors.white,
+                              ),
+                              title: Text(
+                                'Empty Cart',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              content: Text(
+                                'You need to have an item in your cart before you proceed',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('OK',
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: CheckoutScreen(
+                                  total: totalPrice,
+                                ),
+                                type: PageTransitionType.bottomToTop,
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.bounceIn));
+                      }
+                    },
                     child: const Text(
                       "Check out",
                       style: TextStyle(color: Colors.white),

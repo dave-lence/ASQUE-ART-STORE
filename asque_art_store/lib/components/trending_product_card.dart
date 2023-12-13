@@ -31,7 +31,7 @@ class TrendingProdCard extends StatelessWidget {
           children: <Widget>[
             Center(
                 child: Text(
-              product.prodName.substring(0, 10) + "...",
+            product.prodName.length < 10 ? product.prodName :  product.prodName.substring(0, 10) + "...",
               textAlign: TextAlign.center,
               style:
                   const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),

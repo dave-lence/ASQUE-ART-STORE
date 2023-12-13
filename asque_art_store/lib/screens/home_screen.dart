@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   PageTransition(
                                       child: CartScreen(),
-                                      duration: Duration(seconds: 1),
+                                      duration: Duration(milliseconds: 500),
                                       type: PageTransitionType.bottomToTop));
                             },
                             icon:   Badge(
@@ -112,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Container(
                         height: 50,
                         child: CustomTextField(
+                          fillColor: false,
                             iconName: const Icon(
                               Icons.search,
                               color: Colors.white,

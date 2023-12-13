@@ -49,6 +49,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   @override
   Widget build(BuildContext context) {
+     final favProvider = Provider.of<FavProvider>(context);
     return Consumer<FavProvider>(
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
@@ -60,7 +61,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           backgroundColor: Colors.grey.shade800,
         ),
         backgroundColor: Colors.grey.shade800,
-        body: ListView.builder(
+        body:favProvider.fav.isEmpty
+            ? Center(
+                child: Image.asset(
+                  'assets/faveAnime.gif',
+                  width: 300,
+                  height: 300,
+                ),
+              )
+            : ListView.builder(
             itemCount: value.fav.length,
             itemBuilder: (context, index) {
               final Product product = value.fav[index];

@@ -47,6 +47,11 @@ dependencies:
   shared_preferences: ^2.2.2
   motion_toast: ^2.7.9
   another_flushbar: ^1.12.30
+  credit_card_validator: ^2.1.0
+  rounded_loading_button: ^2.1.0
+  address_search_field: ^5.0.3
+  intl_phone_field: ^3.2.0
+  intl_phone_number_input: ^0.7.3+1
 
 dev_dependencies:
   flutter_test:

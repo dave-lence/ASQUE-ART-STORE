@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 
-class Product extends Equatable {
+class Product extends Equatable { 
   final String id;
   final String prodName;
   final bool isArt;
@@ -81,7 +81,7 @@ class Product extends Equatable {
     ),
     Product(
       id: '3',
-      prodName: 'SRelief of Patience',
+      prodName: 'Relief of Patience',
       isArt: false,
       isFineArt: true,
       isSculpture: false,

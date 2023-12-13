@@ -1,11 +1,13 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:another_flushbar/flushbar.dart';
 import 'package:asque_art_store/components/components.dart';
 import 'package:asque_art_store/config/theme.dart';
-import 'package:asque_art_store/models/client_logic.dart';
+import 'package:asque_art_store/models/sign_in_model.dart';
 import 'package:asque_art_store/navigation/bottom_nav_bar.dart';
 import 'package:asque_art_store/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -25,44 +27,72 @@ class _SignInScreenState extends State<SignInScreen> {
       isLoading = true;
     });
 
-    final signInProvider = Provider.of<SignUpProvider>(context, listen: false);
-    final result = await signInProvider.signIn(
-        emailController.text, passwordController.text);
+    SignInModel userData = SignInModel(
+        email: emailController.text, password: passwordController.text);
 
-    await Future.delayed(const Duration(seconds: 5));
-    if (result == 'success') {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        closeIconColor: Colors.white,
-        elevation: 8,
-        showCloseIcon: true,
-        duration: const Duration(seconds: 10),
-        content: const Text("Welcome back!, you\'ve been missed"),
-        backgroundColor: CustomAppTheme()
-            .primary, // Set the background color to red for error messages
-      ));
-      Navigator.of(context).pushAndRemoveUntil(
-        PageTransition(
-          duration: const Duration(seconds: 1),
-          type: PageTransitionType.rightToLeft,
-          child: const BottomNavBar(),
-        ),
-        (Route<dynamic> route) => false,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(seconds: 15),
-        closeIconColor: Colors.white,
-        elevation: 8,
-        showCloseIcon: true,
-        content: Text(result),
-        backgroundColor:
-            Colors.red, // Set the background color to red for error messages
-      ));
+    final apiUri = Uri.parse(
+        'https://asque-media-development.onrender.com/api/v1/auth/login');
+    try {
+      final response = await http.post(apiUri,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(userData.toJson()));
 
-      setState(() {
-        isLoading = false;
-      });
+      if (response.statusCode == 201) {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          closeIconColor: Colors.white,
+          elevation: 8,
+          showCloseIcon: true,
+          duration: const Duration(seconds: 10),
+          content: const Text("Welcome back!, you\'ve been missed"),
+          backgroundColor: CustomAppTheme()
+              .primary, // Set the background color to red for error messages
+        ));
+        Navigator.of(context).pushAndRemoveUntil(
+          PageTransition(
+            duration: const Duration(seconds: 1),
+            type: PageTransitionType.rightToLeft,
+            child: const BottomNavBar(),
+          ),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        Map<String, dynamic> responseMap = jsonDecode(response.body.toString());
+        List<dynamic> errorMessages = responseMap['message'];
+
+        return showFlushbar(
+            context,
+            'Sign in error',
+            Colors.black,
+            errorMessages.toString(),
+            Icon(
+              Icons.error,
+              color: Colors.black,
+            ),
+            Colors.black,
+            Colors.orange);
+      }
+    } catch (error) {
+      showFlushbar(
+          context,
+          'Sign in error',
+          Colors.black,
+          'Check your credentials and make sure they are correct',
+          Icon(
+            Icons.error,
+            color: Colors.black,
+          ),
+          Colors.black,
+          Colors.orange);
     }
+
+    // await Future.delayed(const Duration(seconds: 5));
   }
 
   @override
@@ -120,6 +150,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                   // email field
                   CustomTextField(
+                      fillColor: false,
                       iconName: const Icon(
                         Icons.mail,
                         color: Colors.white,
@@ -132,6 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   // password field
                   CustomTextField(
+                      fillColor: false,
                       iconName: const Icon(
                         Icons.lock,
                         color: Colors.white,
@@ -292,7 +324,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 PageTransition(
                                     type: PageTransitionType.bottomToTop,
                                     curve: Curves.bounceOut,
-                                    duration: const Duration(seconds: 2),
+                                    duration: const Duration(milliseconds: 500),
                                     child: const SignUpScreen()));
                           },
                           child: const Text(
@@ -315,5 +347,32 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
+  }
+
+  // flushbar
+  void showFlushbar(BuildContext context, String title, Color titleColor,
+      String message, Icon icon, Color messageColor, Color backgroundColor) {
+    Flushbar(
+      title: title,
+      titleColor: titleColor,
+      message: message,
+      icon: icon,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      duration: Duration(seconds: 6),
+      animationDuration: Duration(seconds: 1),
+      dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+      forwardAnimationCurve: Curves.bounceInOut,
+      flushbarPosition: FlushbarPosition.TOP,
+      borderRadius: BorderRadius.circular(5),
+      backgroundColor: backgroundColor,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      messageColor: messageColor,
+      boxShadows: [
+        BoxShadow(
+            color: CustomAppTheme().appBlack,
+            offset: Offset(2, 4),
+            blurRadius: 10)
+      ],
+    )..show(context);
   }
 }
